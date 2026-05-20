@@ -6,22 +6,23 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
   const receipts = []
 
   const uiMulti = sdk.MultiHost.of(effects, 'ui-multi')
+  // noAddSsl: true is an undocumented runtime flag that skips TLS termination,
+  // creating a TCP passthrough. Warpgate requires HTTPS natively and can't
+  // serve plain HTTP, so we can't use the normal addSsl proxy pattern.
+  // We write a StartOS CA-signed cert to Warpgate's cert file in main.ts so
+  // the browser trusts it.
   const uiOrigin = await uiMulti.bindPort(webPort, {
     protocol: 'https',
     preferredExternalPort: webPort,
-    addSsl: {
-      alpn: null,
-      preferredExternalPort: webPort,
-      addXForwardedHeaders: true,
-    },
-  })
+    noAddSsl: true,
+  } as any)
   const ui = sdk.createInterface(effects, {
     name: i18n('Web UI'),
     id: 'ui',
     description: i18n('The Warpgate web interface for managing targets, users, and sessions'),
     type: 'ui',
     masked: false,
-    schemeOverride: null,
+    schemeOverride: { ssl: 'https', noSsl: 'https' },
     username: null,
     path: '',
     query: {},

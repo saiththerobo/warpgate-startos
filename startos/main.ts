@@ -63,6 +63,23 @@ log:
 export const main = sdk.setupMain(async ({ effects }) => {
   console.info(i18n('Starting Warpgate'))
 
+  const uiHostnames =
+    (await sdk.serviceInterface
+      .getOwn(effects, 'ui', i =>
+        i?.addressInfo?.format('hostname-info').map(h => h.hostname),
+      )
+      .const()) ?? []
+
+  const hostnames = uiHostnames.length > 0 ? uiHostnames : ['localhost']
+  const certParts = await effects.getSslCertificate({ hostnames })
+  const keyPem = await effects.getSslKey({ hostnames })
+
+  await writeFile(
+    sdk.volumes.main.subpath('tls.certificate.pem'),
+    certParts.join('\n'),
+  )
+  await writeFile(sdk.volumes.main.subpath('tls.key.pem'), keyPem)
+
   await writeFile(sdk.volumes.main.subpath('warpgate.yaml'), warpgateConfig())
 
   const mounts = sdk.Mounts.of().mountVolume({
