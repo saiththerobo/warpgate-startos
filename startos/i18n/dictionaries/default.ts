@@ -13,13 +13,12 @@ const dict = {
   'SSH Gateway': 6,
   'Connect SSH clients through Warpgate to reach your configured targets': 7,
 
-  // actions/completeSetup.ts
-  'Complete Setup': 8,
-  'Instructions for completing Warpgate initial setup': 9,
-  'Setup Instructions': 10,
+  // actions/getAdminCredentials.ts
+  'Get Admin Credentials': 8,
+  'Retrieve your Warpgate admin username and password': 9,
 
   // init/initializeService.ts
-  'Create your admin account via the web interface': 11,
+  'Retrieve your admin credentials': 10,
 } as const
 
 /**

@@ -1,4 +1,4 @@
 import { sdk } from '../sdk'
-import { completeSetup } from './completeSetup'
+import { getAdminCredentials } from './getAdminCredentials'
 
-export const actions = sdk.Actions.of().addAction(completeSetup)
+export const actions = sdk.Actions.of().addAction(getAdminCredentials)
