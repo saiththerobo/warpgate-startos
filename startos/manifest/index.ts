@@ -14,7 +14,7 @@ export const manifest = setupManifest({
   volumes: ['main'],
   images: {
     warpgate: {
-      source: { dockerTag: 'ghcr.io/warp-tech/warpgate:0.23.4' },
+      source: { dockerTag: 'ghcr.io/warp-tech/warpgate:0.25.4' },
       arch: ['x86_64', 'aarch64'],
     },
   },
